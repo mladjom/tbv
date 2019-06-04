@@ -2,4 +2,4 @@
 /www/*
 /.vagrant
 /.git
-/.idea
+/.idea/*
