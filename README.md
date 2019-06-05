@@ -30,9 +30,28 @@ vagrant ssh
 - MySQL 5.7
 - phpMyAdmin 
 - Composer
+- WP-CLI
 - MailCatcher (TODO)
+
+## Connecting
+
+### Apache
+The Apache server is available at [192.168.33.10](http://192.168.33.10)
+
+### MySQL
+Externally the MySQL server is available at port 8889, and when running on the VM it is available as a socket or at port 3306 as usual.  
+**Username**: root  
+**Password**: root
+
+### PhpMyadmin
+PhpMyadmin is available at [192.168.33.10/phpmyadmin](http://192.168.33.10/phpmyadmin)  
+**Username**: root  
+**Password**: root
+
+
+### Mailcatcher
+Mailcatcher is available at [192.168.33.10:1080](http://192.168.33.10:1080)
 
 ## TODO
 
-- MailCatcher
 - Vagrant::Hostsupdater

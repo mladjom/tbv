@@ -5,8 +5,8 @@
 start=`date +%s`
 
 echo -e "\e[96m Adding PPA  \e[39m"
-sudo add-apt-repository -y ppa:ondrej/apache2
-sudo add-apt-repository -y ppa:ondrej/php
+#sudo add-apt-repository -y ppa:ondrej/apache2
+#sudo add-apt-repository -y ppa:ondrej/php
 sudo apt-get update
 
 echo -e "\e[96m Installing apache  \e[39m"
@@ -17,6 +17,8 @@ sudo apt-get -y install php7.2 libapache2-mod-php7.2
 
 # Install some php exts
 sudo apt-get -y install curl zip git nano unzip php-mbstring php-cli php7.2-mysql php7.2-curl php7.2-json php7.2-mbstring php7.2-gd php7.2-intl php7.2-xml php7.2-zip php-gettext php7.2-pgsql
+sudo apt-get -y install php7.2-mongodb php7.2-sqlite3 php7.2-bcmath
+
 #sudo apt-get -y install php-xdebug
 sudo phpenmod curl
 
@@ -57,6 +59,11 @@ echo -e "\e[92m phpMyAdmin installed successfully. \e[39m"
 
 cat << EOF | sudo tee -a /etc/apache2/sites-available/default.conf
 <VirtualHost *:80>
+    <Directory /var/www/tvojastrolog>
+        Options Indexes FollowSymLinks
+        AllowOverride all
+        Require all granted
+    </Directory>
     DocumentRoot "/var/www/tvojastrolog"
     ServerName tvojastrolog.test
 </VirtualHost>
@@ -67,13 +74,44 @@ sudo a2ensite default.conf
 # Restart apache server
 sudo service apache2 restart
 
-# Download and install composer
+ Download and install composer
 echo -e "\e[96m Installing composer \e[39m"
 curl -sS https://getcomposer.org/installer | php
 sudo mv composer.phar /usr/local/bin/composer
 chmod +x /usr/local/bin/composer
-# Fix composer folder permissions
-sudo chown -R $USER $HOME/.composer
+
+# Download and install WP-CLI
+echo -e "\e[96m Installing WP-CLI \e[39m"
+curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+php wp-cli.phar --info
+chmod +x wp-cli.phar
+sudo mv wp-cli.phar /usr/local/bin/wp
+wp --info
+
+echo -e "\e[96m Installing MailCatcher \e[39m"
+# Install Mailcatcher Dependencies (sqlite, ruby)
+sudo apt-get install -y build-essential libsqlite3-dev ruby ruby-dev openssl libssl-dev
+
+
+# Install the gem
+gem install mailcatcher --no-ri --no-rdoc
+
+# Make it start on boot
+echo "@reboot root $(which mailcatcher) --ip=0.0.0.0" >> /etc/crontab
+sudo update-rc.d cron defaults
+
+# Make php use it to send mail
+# bionic
+echo "sendmail_path = /usr/bin/env $(which catchmail) -f 'www-data@localhost'" >> /etc/php/7.2/mods-available/mailcatcher.ini
+
+# Notify php mod manager (5.5+)
+# older ubuntus
+#php5enmod mailcatcher
+# xenial
+phpenmod mailcatcher
+
+# Start it now
+/usr/bin/env $(which mailcatcher) --ip=0.0.0.0
 
 # Check php version
 php -v
