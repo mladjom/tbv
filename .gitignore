@@ -3,3 +3,5 @@
 /.vagrant
 /.git
 .idea
+default.conf
+ubuntu-bionic-18.04-cloudimg-console.log

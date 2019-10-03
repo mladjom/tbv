@@ -1,23 +1,25 @@
 #!/usr/bin/env bash
 
-# Ubuntu 18.04, apache2.4, php 7.2, MySQL 5.7, phpMyAdmin, Composer
+# Ubuntu 18.04.3 LTS (Bionic Beaver), Apache HTTP Server version 2.4, PHP 7.2, MySQL 5.7, phpMyAdmin, Composer
 
 start=`date +%s`
 
-echo -e "\e[96m Adding PPA  \e[39m"
-#sudo add-apt-repository -y ppa:ondrej/apache2
-#sudo add-apt-repository -y ppa:ondrej/php
+echo -e "\e[96m Updating & Upgrading  \e[39m"
 sudo apt-get update
+sudo apt-get -upgrade
 
-echo -e "\e[96m Installing apache  \e[39m"
+echo -e "\e[96m Installing some tools  \e[39m"
+sudo apt-get -y install curl zip git nano unzip
+
+echo -e "\e[96m Installing Apache HTTP Server version 2.4  \e[39m"
 sudo apt-get -y install apache2
 
-echo -e "\e[96m Installing php  \e[39m"
-sudo apt-get -y install php7.2 libapache2-mod-php7.2
+echo -e "\e[96m Installing PHP 7.2  \e[39m"
+sudo apt-get -y install php7.2
 
-# Install some php exts
-sudo apt-get -y install curl zip git nano unzip php-mbstring php-cli php7.2-mysql php7.2-curl php7.2-json php7.2-mbstring php7.2-gd php7.2-intl php7.2-xml php7.2-zip php-gettext php7.2-pgsql
-sudo apt-get -y install php7.2-mongodb php7.2-sqlite3 php7.2-bcmath
+# Install some php extsensions
+sudo apt-get -y install  php-mbstring php-cli php7.2-mysql php7.2-curl php7.2-json php7.2-mbstring php7.2-gd php7.2-intl php7.2-xml php7.2-zip php-gettext php7.2-pgsql
+sudo apt-get -y install php7.2-mongodb php7.2-sqlite3 php7.2-bcmath libapache2-mod-php7.2
 
 #sudo apt-get -y install php-xdebug
 sudo phpenmod curl
@@ -51,23 +53,15 @@ sudo debconf-set-selections <<< 'phpmyadmin phpmyadmin/mysql/app-pass password r
 sudo debconf-set-selections <<< 'phpmyadmin phpmyadmin/reconfigure-webserver multiselect apache2'﻿
 
 sudo apt-get -y install phpmyadmin
+sudo sed -i "s/|\s*\((count(\$analyzed_sql_results\['select_expr'\]\)/| (\1)/g" /usr/share/phpmyadmin/libraries/sql.lib.php
 
 # Restart apache server
 sudo service apache2 restart
-
 echo -e "\e[92m phpMyAdmin installed successfully. \e[39m"
 
-cat << EOF | sudo tee -a /etc/apache2/sites-available/default.conf
-<VirtualHost *:80>
-    <Directory /var/www/tvojastrolog>
-        Options Indexes FollowSymLinks
-        AllowOverride all
-        Require all granted
-    </Directory>
-    DocumentRoot "/var/www/tvojastrolog"
-    ServerName tvojastrolog.test
-</VirtualHost>
-EOF
+if [[ -f /vagrant/default.conf ]]; then
+    cp /vagrant/default.conf /etc/apache2/sites-available/default.conf
+fi
 
 sudo a2ensite default.conf
 
@@ -88,31 +82,6 @@ chmod +x wp-cli.phar
 sudo mv wp-cli.phar /usr/local/bin/wp
 wp --info
 
-echo -e "\e[96m Installing MailCatcher \e[39m"
-# Install Mailcatcher Dependencies (sqlite, ruby)
-sudo apt-get install -y build-essential libsqlite3-dev ruby ruby-dev openssl libssl-dev
-
-
-# Install the gem
-gem install mailcatcher --no-ri --no-rdoc
-
-# Make it start on boot
-echo "@reboot root $(which mailcatcher) --ip=0.0.0.0" >> /etc/crontab
-sudo update-rc.d cron defaults
-
-# Make php use it to send mail
-# bionic
-echo "sendmail_path = /usr/bin/env $(which catchmail) -f 'www-data@localhost'" >> /etc/php/7.2/mods-available/mailcatcher.ini
-
-# Notify php mod manager (5.5+)
-# older ubuntus
-#php5enmod mailcatcher
-# xenial
-phpenmod mailcatcher
-
-# Start it now
-/usr/bin/env $(which mailcatcher) --ip=0.0.0.0
-
 # Check php version
 php -v
 
@@ -124,7 +93,6 @@ mysql --version
 
 # Check if php is working or not
 php -r 'echo "\nYour PHP installation is working fine.\n";'
-
 
 # Check composer version
 composer --version
