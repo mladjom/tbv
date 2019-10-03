@@ -1,4 +1,5 @@
 /databases/*
+!/databases/README.md
 /www/*
 /.vagrant
 /.git
