@@ -1,6 +1,7 @@
 /databases/*
 !/databases/README.md
 /www/*
+!/www/README.md
 /.vagrant
 /.git
 .idea
