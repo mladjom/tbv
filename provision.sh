@@ -33,23 +33,23 @@ echo -e "\e[96m Restart apache server to reflect changes  \e[39m"
 sudo service apache2 restart
 
 echo -e "\e[96m Installing mysql server \e[39m"
-echo -e "\e[93m User: root, Password: root \e[39m"
+echo -e "\e[93m User: root, Password: toor \e[39m"
 
-# Install MySQL Server in a Non-Interactive mode. Default root password will be "root"
-echo "mysql-server-5.7 mysql-server/root_password password root" | sudo debconf-set-selections
-echo "mysql-server-5.7 mysql-server/root_password_again password root" | sudo debconf-set-selections
+# Install MySQL Server in a Non-Interactive mode. Default root password will be "toor"
+echo "mysql-server-5.7 mysql-server/root_password password toor" | sudo debconf-set-selections
+echo "mysql-server-5.7 mysql-server/root_password_again password toor" | sudo debconf-set-selections
 sudo apt-get -y install mysql-server-5.7
 
 ### Run next command on production server
 #sudo mysql_secure_installation
 
 echo -e "\e[96m Begin silent install phpMyAdmin \e[39m"
-echo -e "\e[93m User: root, Password: root \e[39m"
+echo -e "\e[93m User: root, Password: toor \e[39m"
 # Set non-interactive mode
 sudo debconf-set-selections <<< 'phpmyadmin phpmyadmin/dbconfig-install boolean true'
-sudo debconf-set-selections <<< 'phpmyadmin phpmyadmin/app-password-confirm password root'
-sudo debconf-set-selections <<< 'phpmyadmin phpmyadmin/mysql/admin-pass password root'
-sudo debconf-set-selections <<< 'phpmyadmin phpmyadmin/mysql/app-pass password root'
+sudo debconf-set-selections <<< 'phpmyadmin phpmyadmin/app-password-confirm password toor'
+sudo debconf-set-selections <<< 'phpmyadmin phpmyadmin/mysql/admin-pass password toor'
+sudo debconf-set-selections <<< 'phpmyadmin phpmyadmin/mysql/app-pass password toor'
 sudo debconf-set-selections <<< 'phpmyadmin phpmyadmin/reconfigure-webserver multiselect apache2'﻿
 
 sudo apt-get -y install phpmyadmin
@@ -61,9 +61,13 @@ echo -e "\e[92m phpMyAdmin installed successfully. \e[39m"
 
 if [[ -f /vagrant/default.conf ]]; then
     cp /vagrant/default.conf /etc/apache2/sites-available/default.conf
+    sudo a2ensite default.conf
 fi
 
-sudo a2ensite default.conf
+if [[ -f /vagrant/custom.conf ]]; then
+    cp /vagrant/custom.conf /etc/apache2/sites-available/custom.conf
+    sudo a2ensite custom.conf
+fi
 
 # Restart apache server
 sudo service apache2 restart

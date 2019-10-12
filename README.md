@@ -5,6 +5,10 @@
 To use it, download and install [Vagrant](https://www.vagrantup.com), [VirtualBox](https://www.virtualbox.org/) and [Git](https://git-scm.com/). Then, clone this repository and run:
 
 ```bash
+vagrant plugin install vagrant-hostsupdater --local
+```
+
+```bash
 vagrant up
 ```
 
@@ -12,6 +16,7 @@ For ssh access:
 ```bash
 vagrant ssh
 ```
+When it's done, visit http://tbv.test.
 
 ## Minimum System requirements
 
@@ -33,7 +38,8 @@ vagrant ssh
 - WP-CLI
 - MailCatcher (TODO)
 
-## Connecting
+## Adding a New Site
+
 
 ### Apache
 The Apache server is available at [192.168.33.10](http://192.168.33.10)
@@ -41,12 +47,12 @@ The Apache server is available at [192.168.33.10](http://192.168.33.10)
 ### MySQL
 Externally the MySQL server is available at port 8889, and when running on the VM it is available as a socket or at port 3306 as usual.  
 **Username**: root  
-**Password**: root
+**Password**: toor
 
 ### PhpMyadmin
 PhpMyadmin is available at [192.168.33.10/phpmyadmin](http://192.168.33.10/phpmyadmin)  
 **Username**: root  
-**Password**: root
+**Password**: toor
 
 
 ### Mailcatcher
@@ -54,4 +60,4 @@ Mailcatcher is available at [192.168.33.10:1080](http://192.168.33.10:1080)
 
 ## TODO
 
-- Vagrant::Hostsupdater
+- Fake SMTP Server
