@@ -1,10 +1,10 @@
 /database/*
 !/database/README.md
 /www/*
-!/www/dashboard/
+!/www/dashboard
 /.vagrant
 /.git
 .idea
-default.conf
+custom.conf
 hosts.yaml
 ubuntu-bionic-18.04-cloudimg-console.log

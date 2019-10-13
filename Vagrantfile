@@ -48,13 +48,13 @@ Vagrant.configure("2") do |config|
   # Before destroy and halt commands trigger
   config.trigger.before :destroy, :halt do |trigger|
     trigger.info = "Backing databases."
-    trigger.run_remote = { inline: "/vagrant/backupdb.sh" }
+    trigger.run_remote = { inline: "/vagrant/dbbackup.sh" }
   end
 
   # After up command trigger
   config.trigger.after :up do |trigger|
     trigger.info = "Restoring databases."
-    trigger.run_remote = { inline: "/vagrant/restoredb.sh" }
+    trigger.run_remote = { inline: "/vagrant/dbrestore.sh" }
   end
 
   # Provider-specific configuration so you can fine-tune various
