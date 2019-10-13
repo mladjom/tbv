@@ -1,6 +1,6 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
-
+require 'yaml'
 # All Vagrant configuration is done below. The "2" in Vagrant.configure
 # configures the configuration version (we support older styles for
 # backwards compatibility). Please don't change it unless you know what
@@ -72,6 +72,26 @@ Vagrant.configure("2") do |config|
   #
   # View the documentation for the provider you are using for more
   # information on available options.
+
+  # Local Machine Hosts
+  #
+  # If the Vagrant plugin hostsupdater (https://github.com/cogitatio/vagrant-hostsupdater) is
+  # installed, the following will automatically configure your local machine's hosts file to
+  # be aware of the domains specified below. Watch the provisioning script as you may need to
+  # enter a password for Vagrant to access your hosts file.
+  #
+  # By default, we'll include the domains set up by TBV through the hosts.yaml file located
+  # in the root directory. Default host id tbv.test
+  config.vm.hostname = "tbv.test"
+  if defined?(VagrantPlugins::HostsUpdater)
+    if(File.exist?("hosts.yaml"))
+      hosts = YAML.load(File.read("hosts.yaml"))
+      # Pass the found host names to the hostsupdater plugin so it can perform magic.
+      config.hostsupdater.aliases = hosts
+      #  Keeping Host Entries After Suspend/Halt
+      config.hostsupdater.remove_on_suspend = true
+    end
+  end
 
   # Enable provisioning with a shell script. Additional provisioners such as
   # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
