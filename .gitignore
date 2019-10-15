@@ -6,5 +6,5 @@
 /.git
 .idea
 custom.conf
-hosts.yaml
+hosts.yml
 ubuntu-bionic-18.04-cloudimg-console.log

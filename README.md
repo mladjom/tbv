@@ -54,10 +54,6 @@ PhpMyadmin is available at [192.168.33.10/phpmyadmin](http://192.168.33.10/phpmy
 **Username**: root  
 **Password**: toor
 
-
-### Mailcatcher
-Mailcatcher is available at [192.168.33.10:1080](http://192.168.33.10:1080)
-
 ## TODO
 
 - Fake SMTP Server

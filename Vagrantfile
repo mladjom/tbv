@@ -1,6 +1,6 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
-require 'yaml'
+require "yaml"
 # All Vagrant configuration is done below. The "2" in Vagrant.configure
 # configures the configuration version (we support older styles for
 # backwards compatibility). Please don't change it unless you know what
@@ -84,8 +84,9 @@ Vagrant.configure("2") do |config|
   # in the root directory. Default host id tbv.test
   config.vm.hostname = "tbv.test"
   if defined?(VagrantPlugins::HostsUpdater)
-    if(File.exist?("hosts.yaml"))
-      hosts = YAML.load(File.read("hosts.yaml"))
+    dir = File.dirname(File.expand_path(__FILE__))
+    if(File.exist?("#{dir}/hosts.yml"))
+      hosts = YAML.load_file("#{dir}/hosts.yml")
       # Pass the found host names to the hostsupdater plugin so it can perform magic.
       config.hostsupdater.aliases = hosts
       #  Keeping Host Entries After Suspend/Halt
