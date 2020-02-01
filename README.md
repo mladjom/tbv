@@ -1,6 +1,6 @@
 # TeamBox Vagrant (TBV)
 
-A vagrant development box focused on PHP development (Laravel, WordPress...). 
+A vagrant development environment focused on PHP development (Laravel, WordPress...). 
 
 
 ## How To Use
@@ -27,7 +27,7 @@ vagrant ssh
 - [Vagrant](https://www.vagrantup.com) 2.2.4+
 - [Virtualbox](https://www.virtualbox.org) 6.0.12
 - [Git](https://git-scm.com/) 
-- 8GB+ of RAM
+- 2GB+ of RAM
 - Virtualisation ( VT-X ) enabled in the BIOS ( Windows/Linux )
 - Hyper-V turned off ( Windows )
 
