@@ -5,7 +5,15 @@ A vagrant development environment focused on PHP development (Laravel, WordPress
 
 ## How To Use
 
-To use it, download and install [Vagrant](https://www.vagrantup.com), [VirtualBox](https://www.virtualbox.org/) and [Git](https://git-scm.com/). Then, clone this repository and run:
+To use it, download and install [Vagrant](https://www.vagrantup.com), [VirtualBox](https://www.virtualbox.org/) and [Git](https://git-scm.com/). Clone this repository and run:
+
+```bash
+git clone https://github.com/mladjom/tbv.git
+```
+
+```bash
+cd tbv
+```
 
 ```bash
 vagrant plugin install vagrant-hostsupdater --local
@@ -56,7 +64,6 @@ cp hosts.yml.example hosts.yml
 
 > **Note:** Make sure you have hidden files shown on your system.
 
-
 You can add virtual hosts to apache by editing `custom.conf` file. The `DocumentRoot` of the new virtual host will be a directory within the
 `www/` folder matching the `ServerName` you specified. The `Directory` maps to a folder on the host machine.
 
@@ -75,7 +82,9 @@ In order to access new vagrant hosts via your local browser you will need to edi
     ---
     - example.test
 
-Then you will need to reload vagrant with provision flag.
+To update you will need to reload vagrant with provision flag.
+
+Create `/www/example` folder. Open it in an editor to start making changes to your site.
 
 ```bash
 vagrant reload --provision
