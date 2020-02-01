@@ -84,11 +84,12 @@ In order to access new vagrant hosts via your local browser you will need to edi
 
 To update you will need to reload vagrant with provision flag.
 
-Create `/www/example` folder. Open it in an editor to start making changes to your site.
-
 ```bash
 vagrant reload --provision
 ```
+
+Create `/www/example` folder. Open it in an editor to start making changes to your site.
+
 When it's done, visit  [http://example.test](http://example.test).
 
 ## Notes
